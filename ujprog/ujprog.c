@@ -833,7 +833,7 @@ shutdown_usb(void)
 	}
 
 #ifdef __linux__
-	usb_reset((void *) fc.usb_dev);
+	ftdi_usb_reset((void *) fc.usb_dev);
 #else
 	res = ftdi_usb_close(&fc);
 	if (res < 0) {

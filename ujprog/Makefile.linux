@@ -1,18 +1,21 @@
 
 SRCS = ujprog.c
-CFLAGS += -Wall -D__linux__ -std=gnu99 -static
+CFLAGS += -Wall -D__linux__ -std=gnu99 
 
 # for linux on PC (i386/amd64)
 ARCHNAME = $(shell uname -m)-linux-gnu
 # for linux on raspberrypi-3
 # ARCHNAME = arm-linux-gnueabihf
 
-FTLIB = /usr/lib/${ARCHNAME}/libftdi.a
-#FTLIB = -lftdi
-USBLIB = /usr/lib/${ARCHNAME}/libusb.a
+#FTLIB = /usr/lib/$(ARCHNAME)/libftdi.a
+#FTLIB = /usr/lib64/libftdi1.so
+#USBLIB = /usr/lib/$(ARCHNAME)/libusb.a
+#USBLIB = /usr/lib64/libusb.so
+FTLIB = -lftdi1
+USBLIB = -lusb-1.0
 
 ujprog:	${SRCS}
-	${CC} ${CFLAGS} ${SRCS} ${FTLIB} ${USBLIB} -o ujprog
+	${CC} ${CFLAGS} ${SRCS} ${FTLIB} ${USBLIB} -L/usr/lib -I/usr/include/libftdi1 -o ujprog
 
 flash:	ft232r_flash.c
 	${CC} ${CFLAGS} -lusb ft232r_flash.c ${FTLIB} -o ft232r_flash
